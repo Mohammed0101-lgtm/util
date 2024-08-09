@@ -2,7 +2,6 @@
 // Implementation of the myutil library functions
 //
 
-
 #include "myutil.h"
 
 #include <stdio.h>
@@ -180,7 +179,7 @@ double double_max(int _count, ...) {
 // factorial(3) = 3! 
 //              = 3 x 2 x 1 = 6
 unsigned long factorial(int n) {
-    if (n < 0)  return 0; 
+    if (n < 0) return 0; 
     if (n == 0) return 1;
 
     return n * factorial(n - 1); // multiply n with n - 1 recursively
@@ -272,8 +271,9 @@ void insert_to_array(int **arr, size_t *__size, int pos, int val) {
     *arr = temp;
     (*__size)++; // increment size
 
-    // start from the position and shift all the following elements  
-    // to the next index to make room for our guest
+    // start from the position and shift all 
+    // the following elements  to the next 
+    // index to make room for our guest
     for (int i = pos + 1; i < *__size; i++) {
         (*arr)[i] = (*arr)[i - 1];  
     }
@@ -285,13 +285,13 @@ void insert_to_array(int **arr, size_t *__size, int pos, int val) {
 // remove an element from the array given its pos
 // I was tempted to make another one that removes the 
 // element based on it's value , but that would cause 
-// problems with duplicate elements so you don't know 
-// wich one you should remove
+// problems with duplicate elements so you 
+// don't know wich one you should remove
 void remove_from_array(int **arr, size_t *__size, int pos) {
     if (arr == NULL || *arr == NULL || __size == NULL) return;
 
-    // overwrite the element by shifting all the next elements 
-    // to their previous position 
+    // overwrite the element by shifting all the
+    // next elements to their previous position 
     for (int i = pos; i < *__size - 1; i++) {
         (*arr)[i] = (*arr)[i + 1];
     }
@@ -300,7 +300,8 @@ void remove_from_array(int **arr, size_t *__size, int pos) {
 }
 
 
-// create a node of a singly linked list given the value it should hold
+// create a node of a singly linked list 
+// given the value it should hold
 struct ListNode *create_listNode(int val) {
     // allocate memory for a new node
     struct ListNode *node = (struct ListNode *)malloc(sizeof(struct ListNode));
@@ -310,7 +311,9 @@ struct ListNode *create_listNode(int val) {
     }
 
     node->val = val; // set the val
-    node->next = NULL; // remain agnostic to the next element
+    // remain agnostic to 
+    // the next element
+    node->next = NULL; 
 
     return node; 
 }
@@ -320,20 +323,26 @@ void freeList(struct ListNode *head) {
     // if head is null then there is nothing to free
     if (head == NULL) return;
 
-    // this pointer acts as a walker that points to the current 
+    // this pointer acts as a walker 
+    // that points to the current 
     // position in the list
     struct ListNode *ptr = head;
    
     // while the pointer is not NULL 
     while (ptr) {
-        // save the current position before updating ptr so to not 
-        // 'orphin' the current index
+        // save the current position before 
+        // updating ptr so to not 'orphin' 
+        // the current index
         struct ListNode *temp = ptr;
-        ptr = ptr->next; // go to the next position
-        free(temp); // free temp (previous of ptr)
+        // go to the next position
+        ptr = ptr->next; 
+        // free temp (previous of ptr)
+        free(temp); 
     }
-
-    free(head); // free the head and wash your hands
+    
+    // free the head and 
+    // wash your hands
+    free(head);
 }
 
 
@@ -342,14 +351,15 @@ struct ListNode *create_list(int *arr, size_t __size) {
     // typical checking
     if (arr == NULL || __size == 0) return NULL;
 
-    struct ListNode *list = NULL; // head of list
+    // head of list
+    struct ListNode *list = NULL; 
 
     // for each element in 'arr'
     for (int i = 0; i < __size;i++) {
         // make a new node
         struct ListNode *node = create_listNode(arr[i]);
-        // if node creation failed then free memory allocated 
-        // thus far and return 
+        // if node creation failed then free 
+        // memory allocated thus far and return 
         if (node == NULL) {
             freeList(list);
             return NULL;
@@ -358,8 +368,9 @@ struct ListNode *create_list(int *arr, size_t __size) {
         // append new node to the end of list
         append_to_list(list, node);
     }
-
-    return list; // return head of list
+    
+    // return head of list
+    return list; 
 }
 
 // append the given node at the end of the list
@@ -367,8 +378,10 @@ void append_to_list(struct ListNode *head, struct ListNode *node) {
     // no valid node ?! seriously 
     if (node == NULL) return;
     
-    // if the list is empty (we just assume so if head points 
-    // to NULL) then push node to top of list and return
+    // if the list is empty (we 
+    // assume so if head points 
+    // to NULL) then push node 
+    // to top of list and return
     if (head == NULL) {
         head = node;
         return;
@@ -380,7 +393,8 @@ void append_to_list(struct ListNode *head, struct ListNode *node) {
         ptr = ptr->next;
     }
 
-    ptr->next = node; // link the new node
+    // link the new node
+    ptr->next = node; 
 }
 
 // remove an entry based on it's value
@@ -400,7 +414,8 @@ void remove_from_list(struct ListNode **head, int val) {
         return;
     }
 
-    // walk till you find a node that has the target value
+    // walk till you find a node 
+    // that has the target value
     struct ListNode *ptr = *head;
     while (ptr->next && ptr->next->val != val) {
         ptr = ptr->next;
@@ -522,8 +537,8 @@ void insert_to_BST(struct TreeNode **root, struct TreeNode *node) {
     // recursion breaking condition
     if ((*root)->val == node->val) return; 
 
-    // recursively look for the right place to insert
-    // I assume you know how a BST work
+    // recursively look for the right place to 
+    // insert, I assume you know how a BST work
     if ((*root)->val < node->val) {
         insert_to_BST(&(*root)->right, node);
     } else {
