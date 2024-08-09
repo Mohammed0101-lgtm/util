@@ -565,6 +565,8 @@ struct TreeNode *create_BST(int *arr, size_t __size) {
     struct TreeNode *root = create_treeNode(arr[0]);
     if (root == NULL) return NULL;
 
+    // create a node for each element in 
+    // the array and insert it in the tree
     for (int i = 1; i < __size; i++) {
         struct TreeNode *node = create_treeNode(arr[i]);
         if (node == NULL) {
@@ -578,35 +580,40 @@ struct TreeNode *create_BST(int *arr, size_t __size) {
     return root;
 }
 
-
+// search a binary search tree
+// useful for performance cases
 struct TreeNode *search_BST(struct TreeNode *root, int n) {
+    // if the root is empty return null
     if (root == NULL) return NULL;
 
+    // breaking case for recursion
     if (root->val == n) return root;
 
+    // go right or left based 
+    // on value comparison
     else if (root->val < n) 
         return search_BST(root->right, n);
     else 
         return search_BST(root->left, n);
 }
 
+// swap two elements in an array
 static void swap(int *x, int *y) {
-    int temp = *x;
+    int temp = *x; 
     *x = *y;
     *y = temp;
 }
 
+// make a maximum heap that prioritises the maximum elements 
 static void heapify_max(MaxHeap *heap, size_t index) {
     size_t largest = index;
-    size_t left = 2 * index + 1;
+
+    size_t left  = 2 * index + 1;
     size_t right = 2 * index + 2;
 
-    if (left < heap->size && heap->data[left] > heap->data[largest]) {
-        largest = left;
-    }
-    if (right < heap->size && heap->data[right] > heap->data[largest]) {
-        largest = right;
-    }
+    if (left  < heap->size && heap->data[left]  > heap->data[largest]) { largest = left;  }
+    if (right < heap->size && heap->data[right] > heap->data[largest]) { largest = right; }
+    
     if (largest != index) {
         swap(&heap->data[index], &heap->data[largest]);
         heapify(heap, largest);
