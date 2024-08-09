@@ -3,10 +3,10 @@
 
 #include <stdlib.h>
 
-typedef struct Node {
+struct Node {
     int val;
     struct Node *next;
-}Node;
+};
 
 char *get_string(const char *__restrict prompt);
 
