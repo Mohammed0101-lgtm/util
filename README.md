@@ -1,0 +1,2 @@
+# util
+utilities in c
