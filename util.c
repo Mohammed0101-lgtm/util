@@ -9,8 +9,7 @@
 char *get_string(const char *__restrict prompt) {
     printf(prompt);
     
-    char *input = NULL;
-    input = (char *)malloc(MAX_INPUT * sizeof(char));
+    char *input = (char *)malloc(MAX_INPUT * sizeof(char));
     if (input == NULL) {
         fprintf(stderr, "Malloc failed\n");
         return NULL;
@@ -27,6 +26,7 @@ char *get_string(const char *__restrict prompt) {
 
     free(input);
     fprintf(stderr, "Failed to read stdin\n");
+    
     return NULL;
 }
 
