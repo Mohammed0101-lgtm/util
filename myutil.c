@@ -222,7 +222,7 @@ void print_array(int *arr, size_t __size) {
 // let's just print each row as an array 
 void print_matrix(int **mat, size_t __size, size_t *column_size) {
     // please do not provide a ghost matrix
-    if (mat == NULL) return;
+    if (mat == NULL) return;  
     if (__size <= 0) return;
 
     for (int i = 0; i < __size; i++) {
@@ -597,6 +597,7 @@ struct TreeNode *search_BST(struct TreeNode *root, int n) {
         return search_BST(root->left, n);
 }
 
+<<<<<<< HEAD
 // swap two elements in an array
 static void swap(int *x, int *y) {
     int temp = *x; 
@@ -614,104 +615,236 @@ static void heapify_max(MaxHeap *heap, size_t index) {
     if (left  < heap->size && heap->data[left]  > heap->data[largest]) { largest = left;  }
     if (right < heap->size && heap->data[right] > heap->data[largest]) { largest = right; }
     
+=======
+
+// Swap two elements in an array
+// This function exchanges the values of the two elements pointed to by x and y.
+static void swap(int *x, int *y) {
+    // Store the value of *x 
+    // in a temporary variable
+    int temp = *x; 
+    // Assign the value 
+    // of *y to *x
+    *x = *y;       
+    // Assign the stored 
+    // value (temp) to *y
+    *y = temp;     
+}
+
+
+// Make a maximum heap that prioritizes the maximum elements
+// This function ensures that the subtree rooted 
+// at 'index' satisfies the max-heap property.
+static void heapify_max(MaxHeap *heap, size_t index) {
+    // Assume the current index is the largest
+    size_t largest = index; 
+    // Left child index
+    size_t left  = 2 * index + 1; 
+    // Right child index
+    size_t right = 2 * index + 2; 
+
+    // Check if the left child exists and 
+    // is greater than the current largest
+    if (left < heap->size && heap->data[left] > heap->data[largest]) { 
+        largest = left;
+    }
+
+    // Check if the right child exists and 
+    // is greater than the current largest
+    if (right < heap->size && heap->data[right] > heap->data[largest]) { 
+        largest = right;
+    }
+
+    // If the largest is not the current index, 
+    // swap and recursively heapify
+>>>>>>> 7656eea (updated myutil.c)
     if (largest != index) {
-        swap(&heap->data[index], &heap->data[largest]);
-        heapify(heap, largest);
+        // Swap the values
+        swap(&heap->data[index], &heap->data[largest]); 
+        // Recursively ensure the 
+        // subtree is a max-heap
+        heapify_max(heap, largest); 
     }
 }
 
+
+// Create a max-heap with the given capacity
+// Allocates memory for a MaxHeap structure and its data array.
 MaxHeap* create_max_heap(size_t capacity) {
-    MaxHeap *heap = malloc(sizeof(MaxHeap));
-    heap->data = malloc(capacity * sizeof(int));
-    heap->size = 0;
-    heap->capacity = capacity;
-    return heap;
+    // Allocate memory for the heap structure
+    MaxHeap *heap = malloc(sizeof(MaxHeap)); 
+    // Allocate memory for the data array
+    heap->data = malloc(capacity * sizeof(int)); 
+    // Initialize the heap size to 0
+    heap->size = 0; 
+    // Set the capacity of the heap
+    heap->capacity = capacity; 
+    // Return the newly created heap
+    return heap; 
 }
 
+
+// Insert a value into the max-heap
+// Adds a new value to the heap and 
+// maintains the max-heap property.
 void insert_max_heap(MaxHeap *heap, int value) {
-    if (heap->size >= heap->capacity) {
-        fprintf(stderr, "Heap is full\n");
+    // Check if the heap is full
+    if (heap->size >= heap->capacity) { 
+        // Print an error message if full
+        fprintf(stderr, "Heap is full\n"); 
         return;
     }
+    // Insert the new value at the end of the heap
     size_t index = heap->size++;
+    // Set the value at the new index
     heap->data[index] = value;
 
+    // Move the value up the heap to maintain the max-heap property
     while (index != 0 && heap->data[(index - 1) / 2] < heap->data[index]) {
-        swap(&heap->data[index], &heap->data[(index - 1) / 2]);
-        index = (index - 1) / 2;
+        // Swap with parent
+        swap(&heap->data[index], &heap->data[(index - 1) / 2]); 
+        // Move up to parent index
+        index = (index - 1) / 2; 
     }
 }
 
+
+// Extract the maximum value from the max-heap
+// Removes and returns the maximum value (root) of the heap.
 int extract_max(MaxHeap *heap) {
+    // Return -1 if the heap is empty
     if (heap->size <= 0) return -1; 
+     // Return the only element and decrease size
     if (heap->size == 1) return heap->data[--heap->size];
 
-    int root = heap->data[0];
-    heap->data[0] = heap->data[--heap->size];
-    heapify(heap, 0);
-
+    // Store the maximum value (root)
+    int root = heap->data[0]; 
+    // Replace root with the last element
+    heap->data[0] = heap->data[--heap->size]; 
+    // Restore the max-heap property
+    heapify_max(heap, 0); 
+    
+    // Return maximum value
     return root;
 }
 
+
+// Destroy the max-heap and free allocated memory
+// Frees the memory allocated for the heap's 
+// data and the heap structure itself.
 void destroy_max_heap(MaxHeap *heap) {
-    free(heap->data);
-    free(heap);
+    // Free the memory allocated 
+    // for the heap data array
+    free(heap->data); 
+    free(heap); 
 }
 
 
+// Make a minimum heap that prioritizes the minimum elements
+// This function ensures that the subtree rooted 
+// at 'index' satisfies the min-heap property.
 static void heapify_min(MinHeap *heap, size_t index) {
-    size_t smallest = index;
-    size_t left = 2 * index + 1;
-    size_t right = 2 * index + 2;
+    // Assume the current index 
+    // is the smallest
+    size_t smallest = index; 
+    // Left child index
+    size_t left = 2 * index + 1; 
+    // Right child index
+    size_t right = 2 * index + 2; 
 
+    // Check if the left child exists and is 
+    // smaller than the current smallest
     if (left < heap->size && heap->data[left] < heap->data[smallest]) {
         smallest = left;
     }
+
+    // Check if the right child exists and 
+    // is smaller than the current smallest
     if (right < heap->size && heap->data[right] < heap->data[smallest]) {
         smallest = right;
     }
+
+    // If the smallest is not the current index, 
+    // swap and recursively heapify
     if (smallest != index) {
-        swap(&heap->data[index], &heap->data[smallest]);
-        heapify(heap, smallest);
+        // Swap the values
+        swap(&heap->data[index], &heap->data[smallest]); 
+        // Recursively ensure the subtree is a min-heap
+        heapify_min(heap, smallest); 
     }
 }
 
+
+// Create a min-heap with the given capacity
+// Allocates memory for a MinHeap structure and its data array.
 MinHeap* create_min_heap(size_t capacity) {
-    MinHeap *heap = malloc(sizeof(MinHeap));
+    // Allocate memory for the heap structure
+    MinHeap *heap = malloc(sizeof(MinHeap)); 
+    // Allocate memory for the data array
     heap->data = malloc(capacity * sizeof(int));
+    // Initialize the heap size to 0
     heap->size = 0;
-    heap->capacity = capacity;
+    // Set the capacity of the heap
+    heap->capacity = capacity; 
+    // Return heap
     return heap;
 }
 
+
+// Insert a value into the min-heap
+// Adds a new value to the heap and 
+// maintains the min-heap property.
 void insert_min_heap(MinHeap *heap, int value) {
-    if (heap->size >= heap->capacity) {
+    // Check if the heap is full
+    if (heap->size >= heap->capacity) { 
+        // Print an error message if full
         fprintf(stderr, "Heap is full\n");
         return;
     }
-    size_t index = heap->size++;
-    heap->data[index] = value;
 
+    // Insert the new value at 
+    // the end of the heap
+    size_t index = heap->size++;
+    // Set the value at the new index
+    heap->data[index] = value; 
+
+    // Move the value up the heap to 
+    // maintain the min-heap property
     while (index != 0 && heap->data[(index - 1) / 2] > heap->data[index]) {
-        swap(&heap->data[index], &heap->data[(index - 1) / 2]);
-        index = (index - 1) / 2;
+        // Swap with parent
+        swap(&heap->data[index], &heap->data[(index - 1) / 2]); 
+        // Move up to parent index
+        index = (index - 1) / 2; 
     }
 }
 
+
+// Extract the minimum value from the min-heap
+// Removes and returns the minimum value (root) of the heap.
 int extract_min(MinHeap *heap) {
+    // Return -1 if the heap is empty
     if (heap->size <= 0) return -1; 
+    // Return the only element and decrease size
     if (heap->size == 1) return heap->data[--heap->size];
 
-    int root = heap->data[0];
-    heap->data[0] = heap->data[--heap->size];
-    heapify(heap, 0);
+    // Store the minimum value (root)
+    int root = heap->data[0]; 
+    // Replace root with the last element
+    heap->data[0] = heap->data[--heap->size]; 
+    // Restore the min-heap property
+    heapify_min(heap, 0); 
 
-    return root;
+    return root; // Return minimum value
 }
 
+
+// Destroy the min-heap and free allocated memory
+// Frees the memory allocated for the heap's 
+// data and the heap structure itself.
 void destroy_min_heap(MinHeap *heap) {
-    free(heap->data);
-    free(heap);
+    // Free the memory allocated 
+    // for the heap data array
+    free(heap->data); 
+    free(heap); 
 }
-
 
