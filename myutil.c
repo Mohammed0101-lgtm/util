@@ -125,7 +125,7 @@ float float_max(int _count, ...) {
     va_start(arg_ptr, _count);
 
     float maximum = __FLT_MIN__;
-    int next;
+    float next;
 
     for (int i = 0; i < _count; i++) {
         next = va_arg(arg_ptr, float);
@@ -144,7 +144,7 @@ double double_min(int _count, ...) {
     va_start(arg_ptr, _count);
 
     double minimum = __DBL_MAX__;
-    int next;
+    float next;
 
     for (int i = 0; i < _count; i++) {
         next = va_arg(arg_ptr, double);
@@ -597,7 +597,6 @@ struct TreeNode *search_BST(struct TreeNode *root, int n) {
         return search_BST(root->left, n);
 }
 
-<<<<<<< HEAD
 // swap two elements in an array
 static void swap(int *x, int *y) {
     int temp = *x; 
@@ -608,27 +607,29 @@ static void swap(int *x, int *y) {
 // make a maximum heap that prioritises the maximum elements 
 static void heapify_max(MaxHeap *heap, size_t index) {
     size_t largest = index;
-
-    size_t left  = 2 * index + 1;
+    size_t left = 2 * index + 1;
     size_t right = 2 * index + 2;
 
-    if (left  < heap->size && heap->data[left]  > heap->data[largest]) { largest = left;  }
-    if (right < heap->size && heap->data[right] > heap->data[largest]) { largest = right; }
-    
-=======
+    // Check if left child exists and is greater than the current largest
+    if (left < heap->size && heap->data[left] > heap->data[largest]) {
+        largest = left;
+    }
 
-// Swap two elements in an array
-// This function exchanges the values of the two elements pointed to by x and y.
-static void swap(int *x, int *y) {
-    // Store the value of *x 
-    // in a temporary variable
-    int temp = *x; 
-    // Assign the value 
-    // of *y to *x
-    *x = *y;       
-    // Assign the stored 
-    // value (temp) to *y
-    *y = temp;     
+    // Check if right child exists and is greater than the current largest
+    if (right < heap->size && heap->data[right] > heap->data[largest]) {
+        largest = right;
+    }
+
+    // If the largest is not the current index, swap and heapify the affected subtree
+    if (largest != index) {
+        // Swap the values
+        int temp = heap->data[index];
+        heap->data[index] = heap->data[largest];
+        heap->data[largest] = temp;
+
+        // Recursively heapify the affected subtree
+        heapify_max(heap, largest);
+    }
 }
 
 
@@ -657,7 +658,6 @@ static void heapify_max(MaxHeap *heap, size_t index) {
 
     // If the largest is not the current index, 
     // swap and recursively heapify
->>>>>>> 7656eea (updated myutil.c)
     if (largest != index) {
         // Swap the values
         swap(&heap->data[index], &heap->data[largest]); 
